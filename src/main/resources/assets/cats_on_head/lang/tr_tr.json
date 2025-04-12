@@ -1,0 +1,17 @@
+{
+    "cats_on_head.translatable.collar_color": "Tasma Rengi",
+    "cats_on_head.translatable.owner_name": "Sahibi",
+    "cats_on_head.translatable.fed_fish_count": "Beslenen Balık Sayısı",
+    "effect.cats_on_head.love_of_the_feline": "Kedinin Sevgisi",
+    "item.cats_on_head.all_black_cat_item": "Siyah Kedi",
+    "item.cats_on_head.black_cat_item": "Smokin Kedi",
+    "item.cats_on_head.british_shorthair_cat_item": "British Shorthair Kedi",
+    "item.cats_on_head.calico_cat_item": "Alacalı Kedi",
+    "item.cats_on_head.jellie_cat_item": "Jellie Kedisi",
+    "item.cats_on_head.persian_cat_item": "Pers Kedi",
+    "item.cats_on_head.ragdoll_cat_item": "Ragdoll Kedi",
+    "item.cats_on_head.red_cat_item": "Kızıl Kedi",
+    "item.cats_on_head.siamese_cat_item": "Siyam Kedisi",
+    "item.cats_on_head.tabby_cat_item": "Tekir Kedi",
+    "item.cats_on_head.white_cat_item": "Beyaz Kedi"
+}

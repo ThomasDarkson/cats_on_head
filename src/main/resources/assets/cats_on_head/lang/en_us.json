@@ -1,0 +1,17 @@
+{
+    "cats_on_head.translatable.collar_color": "Collar Color",
+    "cats_on_head.translatable.owner_name": "Owner",
+    "cats_on_head.translatable.fed_fish_count": "Number of Fish Fed",
+    "effect.cats_on_head.love_of_the_feline": "Love of The Feline",
+    "item.cats_on_head.all_black_cat_item": "Black Cat",
+    "item.cats_on_head.black_cat_item": "Tuxedo Cat",
+    "item.cats_on_head.british_shorthair_cat_item": "British Shorthair Cat",
+    "item.cats_on_head.calico_cat_item": "Calico Cat",
+    "item.cats_on_head.jellie_cat_item": "Jellie Cat",
+    "item.cats_on_head.persian_cat_item": "Persian Cat",
+    "item.cats_on_head.ragdoll_cat_item": "Ragdoll Cat",
+    "item.cats_on_head.red_cat_item": "Red Cat",
+    "item.cats_on_head.siamese_cat_item": "Siamese Cat",
+    "item.cats_on_head.tabby_cat_item": "Tabby Cat",
+    "item.cats_on_head.white_cat_item": "White Cat"
+}
