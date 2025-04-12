@@ -22,6 +22,8 @@ Cats drop strings, unless you have this mod installed. With this mod, tamed\* ca
 
 You can see your cat's information on tooltip.
 
+The item entity of cats will never disappear and only the owner can pick their cat items off the ground.
+
 ## Putting Your Cat on Your Head
 When you get your cat as an item, you can put it on your head for **Love of The Feline** status effect.
 
@@ -61,15 +63,16 @@ Level **5** beneficial effects (Fed fish >= 256):
 If you sleep with your cat on your head, your cat will get off your head and will sleep with you instead. 
 
 If your cat's level is higher than 1, your cat's morning gifts will change based on the level.
+The chance of your cat giving you a gift increases every level (if it's higher than 1), 15% for every level. When level is 3 or higher the morning gifts are guaranteed.
 
 Level 2 morning gift's loot table is:
 - Rolls: 1
 
 |  Gift  |  Weight  |  Chance  | 1 in ...  | Count |
 | ------------ | ------------ | ------------ | ------------ | ------------ |
-|  Feather  |  5  | %27.77  |  3.6  | 1 |
-|  Iron Ingot  |  4  |  %14.8  |  2.2  | 1 |
-|  Gold Ingot  | 3 | %16.6 | 6 | 1 |
+|  Feather  |  5  | 27.77%  |  3.6  | 1 |
+|  Iron Ingot  |  4  |  14.8%  |  2.2  | 1 |
+|  Gold Ingot  | 3 | 16.6% | 6 | 1 |
 |  Redstone  | 2 | 11.11% | 9 | 1 |
 |  Phantom Membrane  | 2 | 11.11% | 9 | 1 |
 |  Diamond  | 2 | 11.11% | 9 | 1 |

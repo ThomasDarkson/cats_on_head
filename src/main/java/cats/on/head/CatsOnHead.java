@@ -7,6 +7,7 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.entity.passive.CatVariant;
+import net.minecraft.entity.passive.CatVariants;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootTable;
@@ -36,18 +37,19 @@ import cats.on.head.item.TabbyCatItem;
 import cats.on.head.item.WhiteCatItem;
 
 public class CatsOnHead implements ModInitializer {
-	public static final CatVariant[] VARIANTS = {
-		Registries.CAT_VARIANT.get(CatVariant.ALL_BLACK),
-		Registries.CAT_VARIANT.get(CatVariant.BLACK),
-		Registries.CAT_VARIANT.get(CatVariant.BRITISH_SHORTHAIR),
-		Registries.CAT_VARIANT.get(CatVariant.CALICO),
-		Registries.CAT_VARIANT.get(CatVariant.JELLIE),
-		Registries.CAT_VARIANT.get(CatVariant.PERSIAN),
-		Registries.CAT_VARIANT.get(CatVariant.RAGDOLL),
-		Registries.CAT_VARIANT.get(CatVariant.RED),
-		Registries.CAT_VARIANT.get(CatVariant.SIAMESE),
-		Registries.CAT_VARIANT.get(CatVariant.TABBY),
-		Registries.CAT_VARIANT.get(CatVariant.WHITE)
+	@SuppressWarnings("rawtypes")
+	public static final RegistryKey[] VARIANTS = {
+		CatVariants.ALL_BLACK,
+		CatVariants.BLACK,
+		CatVariants.BRITISH_SHORTHAIR,
+		CatVariants.CALICO,
+		CatVariants.JELLIE,
+		CatVariants.PERSIAN,
+		CatVariants.RAGDOLL,
+		CatVariants.RED,
+		CatVariants.SIAMESE,
+		CatVariants.TABBY,
+		CatVariants.WHITE
 	};
 
 	public static final RegistryKey<LootTable> CAT_MORNING_GIFT_LEVEL_1 = registerLootTable("gameplay/cat_morning_gift_level_1");
@@ -125,13 +127,14 @@ public class CatsOnHead implements ModInitializer {
 		return Identifier.of(MOD_ID, o);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static boolean checkCat(CatEntity cat) {
 		if (cat.isBaby())
 			return false;
 		if (cat.getClass().getSuperclass() == CatEntity.class)
 			return false;
-		for (CatVariant catVariant : VARIANTS) {
-			if (catVariant == cat.getVariant().value())
+		for (RegistryKey<CatVariant> catVariant : VARIANTS) {
+			if (catVariant == cat.getVariant().getKey().get())
 				return true;
 		}
 

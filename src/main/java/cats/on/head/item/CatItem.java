@@ -1,7 +1,7 @@
 package cats.on.head.item;
 
-import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -15,6 +15,7 @@ import net.minecraft.block.entity.Spawner;
 import net.minecraft.component.ComponentMap;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.EquippableComponent;
+import net.minecraft.component.type.TooltipDisplayComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
@@ -29,7 +30,6 @@ import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.item.equipment.EquipmentType;
 import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -74,20 +74,20 @@ public class CatItem extends SpawnEggItem {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+    public void appendTooltip(ItemStack stack, TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type) {
         int rgb = Formatting.GRAY.getColorValue();
         if (stack.contains(CatsOnHead.COLLAR_COLOR)) {
             rgb = Integer.parseInt(stack.get(CatsOnHead.COLLAR_COLOR));
             MutableText text = Text.translatable("cats_on_head.translatable.collar_color").append(": ").setStyle(Style.EMPTY.withColor(Formatting.GRAY));
             text.append(Text.literal(CatsOnHead.rgbToHex(rgb)).setStyle(Style.EMPTY.withColor(rgb)));
 
-            tooltip.add(text);
+            textConsumer.accept(text);
         }
         if (stack.contains(CatsOnHead.OWNER_NAME)) {
             MutableText text = Text.translatable("cats_on_head.translatable.owner_name").append(": ").setStyle(Style.EMPTY.withColor(Formatting.GRAY));
             text.append(Text.literal(stack.get(CatsOnHead.OWNER_NAME)).setStyle(Style.EMPTY.withColor(rgb)));
 
-            tooltip.add(text);
+            textConsumer.accept(text);
         }
         if (stack.contains(CatsOnHead.FED_FISH_COUNT)) {
             int count = stack.get(CatsOnHead.FED_FISH_COUNT);
@@ -104,19 +104,19 @@ public class CatItem extends SpawnEggItem {
             MutableText text = Text.translatable("cats_on_head.translatable.fed_fish_count").append(": ").setStyle(Style.EMPTY.withColor(Formatting.GRAY));
             text.append(Text.literal("" + count).setStyle(Style.EMPTY.withColor(color)));
 
-            tooltip.add(text);
+            textConsumer.accept(text);
         }
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        if (selected) {
-            if (world.getRandom().nextFloat() < 0.02F) {
-                world.playSound((PlayerEntity) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_CAT_PURR, entity.getSoundCategory());
+    public void inventoryTick(ItemStack stack, ServerWorld world, Entity entity, @Nullable EquipmentSlot slot) {
+        if (entity instanceof PlayerEntity player) {
+            if (player.getMainHandStack() == stack) {
+                if (world.getRandom().nextFloat() < 0.02F) {
+                    world.playSound((PlayerEntity) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_CAT_PURR, entity.getSoundCategory());
+                }
             }
-        }
-        else if (entity instanceof PlayerEntity player) {
-            if (player.getEquippedStack(EquipmentSlot.HEAD) == stack) {
+            else if (player.getEquippedStack(EquipmentSlot.HEAD) == stack) {
                 if (world.getRandom().nextFloat() < 0.0025F) 
                     world.playSound((PlayerEntity) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_CAT_PURR, entity.getSoundCategory());
             }
@@ -158,7 +158,7 @@ public class CatItem extends SpawnEggItem {
                     if (entity instanceof CatEntity cat) {
                         cat.setOwner(context.getPlayer());
                         cat.setTamed(true, true);
-                        cat.setVariant(Registries.CAT_VARIANT.getOrThrow(variant));
+                        ((CatEntityVarsInterface) cat).set_Variant(cat.getRegistryManager().getEntryOrThrow(variant));
                         cat.setPersistent();
                         if (components.contains(CatsOnHead.FED_FISH_COUNT))
                             ((CatEntityVarsInterface) cat).set_eatedFish(components.get(CatsOnHead.FED_FISH_COUNT));
@@ -188,7 +188,7 @@ public class CatItem extends SpawnEggItem {
         } else if (world instanceof ServerWorld && (ownerUuid == null || ownerUuid.equals(user.getUuidAsString()))) {
             ServerWorld serverWorld = (ServerWorld)world;
             BlockPos blockPos = blockHitResult.getBlockPos();
-            if (world.canPlayerModifyAt(user, blockPos) && user.canPlaceOn(blockPos, blockHitResult.getSide(), itemStack)) {
+            if (world.canEntityModifyAt(user, blockPos) && user.canPlaceOn(blockPos, blockHitResult.getSide(), itemStack)) {
                 EntityType<?> entityType = this.getEntityType(serverWorld.getRegistryManager(), itemStack);
                 Entity entity = entityType.spawnFromItemStack(serverWorld, itemStack, user, new BlockPos((int) user.getX(), (int)user.getY(), (int)user.getZ()), SpawnReason.TRIGGERED, false, false);
                 if (entity == null) {
@@ -201,7 +201,7 @@ public class CatItem extends SpawnEggItem {
                     if (entity instanceof CatEntity cat) {
                         cat.setOwner(user);
                         cat.setTamed(true, true);
-                        cat.setVariant(Registries.CAT_VARIANT.getOrThrow(variant));
+                        ((CatEntityVarsInterface) cat).set_Variant(cat.getRegistryManager().getEntryOrThrow(variant));
                         cat.setPersistent();
                         if (components.contains(CatsOnHead.FED_FISH_COUNT))
                             ((CatEntityVarsInterface) cat).set_eatedFish(components.get(CatsOnHead.FED_FISH_COUNT));
@@ -235,7 +235,7 @@ public class CatItem extends SpawnEggItem {
             BlockPos blockPos = blockHitResult.getBlockPos();
             if (!(world.getBlockState(blockPos).getBlock() instanceof FluidBlock)) {
                 return ActionResult.PASS;
-            } else if (world.canPlayerModifyAt(user, blockPos) && user.canPlaceOn(blockPos, blockHitResult.getSide(), itemStack)) {
+            } else if (world.canEntityModifyAt(user, blockPos) && user.canPlaceOn(blockPos, blockHitResult.getSide(), itemStack)) {
                 EntityType<?> entityType = this.getEntityType(serverWorld.getRegistryManager(), itemStack);
                 Entity entity = entityType.spawnFromItemStack(serverWorld, itemStack, user, blockPos, SpawnReason.SPAWN_ITEM_USE, false, false);
                 if (entity == null) {
@@ -248,7 +248,7 @@ public class CatItem extends SpawnEggItem {
                     if (entity instanceof CatEntity cat) {
                         cat.setOwner(user);
                         cat.setTamed(true, true);
-                        cat.setVariant(Registries.CAT_VARIANT.getOrThrow(variant));
+                        ((CatEntityVarsInterface) cat).set_Variant(cat.getRegistryManager().getEntryOrThrow(variant));
                         cat.setPersistent();
                         if (components.contains(CatsOnHead.FED_FISH_COUNT))
                             ((CatEntityVarsInterface) cat).set_eatedFish(components.get(CatsOnHead.FED_FISH_COUNT));

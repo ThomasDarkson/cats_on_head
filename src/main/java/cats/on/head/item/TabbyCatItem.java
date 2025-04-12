@@ -1,9 +1,9 @@
 package cats.on.head.item;
 
-import net.minecraft.entity.passive.CatVariant;
+import net.minecraft.entity.passive.CatVariants;
 
 public class TabbyCatItem extends CatItem {
     public TabbyCatItem() {
-        super("tabby", CatVariant.SIAMESE);
+        super("tabby", CatVariants.SIAMESE);
     }
 }

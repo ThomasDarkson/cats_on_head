@@ -57,7 +57,7 @@ public abstract class MobEntityMixin {
         }
         else if (mob instanceof CatEntity cat) {
             cat.clearGoals((goal) -> {
-                return goal.getClass() == FollowOwnerGoal.class || goal.getClass().getName() == "net.minecraft.class_1451$class_3699";
+                return goal.getClass() == FollowOwnerGoal.class || goal.getClass().getName().equals("net.minecraft.class_1451$class_3699");
             });
             goalSelector.add(2, new FollowOwnerGoal(cat, 1.4d, 5F, 2.5F));
             goalSelector.add(3, new SleepAndGiveGiftsToPlayerGoal(cat));

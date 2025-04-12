@@ -8,6 +8,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.entity.passive.CatVariant;
+import net.minecraft.entity.passive.CatVariants;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,27 +37,27 @@ public abstract class LivingEntityMixin {
             if (damageSource.getAttacker() instanceof PlayerEntity player && cat.getOwner() == player && !cat.isBaby()) {
                 RegistryKey<CatVariant> variant = cat.getVariant().getKey().get();
                 Item item = null;
-                if (variant == CatVariant.BLACK)
+                if (variant == CatVariants.BLACK)
                     item = CatsOnHead.black;
-                if (variant == CatVariant.BRITISH_SHORTHAIR)
+                if (variant == CatVariants.BRITISH_SHORTHAIR)
                     item = CatsOnHead.british_shorthair;
-                if (variant == CatVariant.CALICO)
+                if (variant == CatVariants.CALICO)
                     item = CatsOnHead.calico;
-                if (variant == CatVariant.JELLIE)
+                if (variant == CatVariants.JELLIE)
                     item = CatsOnHead.jellie;
-                if (variant == CatVariant.PERSIAN)
+                if (variant == CatVariants.PERSIAN)
                     item = CatsOnHead.persian;
-                if (variant == CatVariant.RAGDOLL)
+                if (variant == CatVariants.RAGDOLL)
                     item = CatsOnHead.ragdoll;
-                if (variant == CatVariant.RED)
+                if (variant == CatVariants.RED)
                     item = CatsOnHead.red;
-                if (variant == CatVariant.SIAMESE)
+                if (variant == CatVariants.SIAMESE)
                     item = CatsOnHead.siamese;
-                if (variant == CatVariant.TABBY)
+                if (variant == CatVariants.TABBY)
                     item = CatsOnHead.tabby;   
-                if (variant == CatVariant.WHITE)
+                if (variant == CatVariants.WHITE)
                     item = CatsOnHead.white;
-                if (variant == CatVariant.ALL_BLACK)
+                if (variant == CatVariants.ALL_BLACK)
                     item = CatsOnHead.all_black;
 
                 int fed = ((CatEntityVarsInterface) cat).get_eatedFish();
@@ -66,7 +67,7 @@ public abstract class LivingEntityMixin {
                     stack.set(CatsOnHead.COLLAR_COLOR, "" + catEntity.getCollarColor().getEntityColor());
                     stack.set(CatsOnHead.OWNER_UUID, player.getUuidAsString());
                     stack.set(CatsOnHead.OWNER_NAME, player.getNameForScoreboard());
-                    stack.set(CatsOnHead.COLLAR_COLOR_ID, catEntity.getCollarColor().getId());
+                    stack.set(CatsOnHead.COLLAR_COLOR_ID, catEntity.getCollarColor().getIndex());
                     stack.set(CatsOnHead.FED_FISH_COUNT, fed);
                     if (cat.hasCustomName())
                         stack.set(CatsOnHead.CUSTOM_NAME, cat.getCustomName().getLiteralString());

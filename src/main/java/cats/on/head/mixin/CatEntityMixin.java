@@ -16,9 +16,11 @@ import net.minecraft.component.type.FoodComponent;
 import net.minecraft.component.type.UseRemainderComponent;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.passive.CatEntity;
+import net.minecraft.entity.passive.CatVariant;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -35,7 +37,17 @@ public abstract class CatEntityMixin implements CatEntityVarsInterface {
 	@Shadow
 	private static TrackedData<Boolean> HEAD_DOWN;
 
+    @Shadow
+	private void setVariant(RegistryEntry<CatVariant> variant) {
+
+    }
+
     private int eatedFish = 0;
+
+    @Override
+    public void set_Variant(RegistryEntry<CatVariant> entry) {
+        this.setVariant(entry);
+    }
 
     @Override
     public void set_HeadDown(boolean down) {
@@ -107,6 +119,6 @@ public abstract class CatEntityMixin implements CatEntityVarsInterface {
 
     @Inject(at = @At("TAIL"), method = "readCustomDataFromNbt")
     public void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo info) {
-        eatedFish = nbt.getInt("eatedFish");
+        eatedFish = nbt.getInt("eatedFish", 0);
     }
 }

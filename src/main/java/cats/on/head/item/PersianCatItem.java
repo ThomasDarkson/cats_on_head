@@ -1,9 +1,9 @@
 package cats.on.head.item;
 
-import net.minecraft.entity.passive.CatVariant;
+import net.minecraft.entity.passive.CatVariants;
 
 public class PersianCatItem extends CatItem {
     public PersianCatItem() {
-        super("persian", CatVariant.PERSIAN);
+        super("persian", CatVariants.PERSIAN);
     }
 }

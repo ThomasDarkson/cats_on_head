@@ -1,9 +1,9 @@
 package cats.on.head.item;
 
-import net.minecraft.entity.passive.CatVariant;
+import net.minecraft.entity.passive.CatVariants;
 
 public class RedCatItem extends CatItem {
     public RedCatItem() {
-        super("red", CatVariant.RED);
+        super("red", CatVariants.RED);
     }
 }
