@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"package": "cats.on.head.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"LivingEntityMixin",
+		"CatEntityMixin",
+		"MobEntityMixin",
+		"ItemEntityMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
