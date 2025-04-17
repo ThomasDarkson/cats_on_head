@@ -18,6 +18,7 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
@@ -75,7 +76,7 @@ public abstract class CatEntityMixin implements CatEntityVarsInterface {
         if (cat.isTamed() && CatsOnHead.checkCat(cat)) {
             if (cat.isOwner(player)) {
                 ItemStack itemStack = player.getStackInHand(hand);
-                if (cat.isBreedingItem(itemStack) && cat.getHealth() == cat.getMaxHealth()) {
+                if ((itemStack.isOf(Items.COOKED_COD) || itemStack.isOf(Items.COOKED_SALMON)) && cat.getHealth() == cat.getMaxHealth()) {
                     if (!cat.getWorld().isClient()) {
                         int i = itemStack.getCount();
                         UseRemainderComponent useRemainderComponent = (UseRemainderComponent) itemStack.get(DataComponentTypes.USE_REMAINDER);

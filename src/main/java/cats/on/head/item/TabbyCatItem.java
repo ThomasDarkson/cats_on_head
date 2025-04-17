@@ -4,6 +4,6 @@ import net.minecraft.entity.passive.CatVariant;
 
 public class TabbyCatItem extends CatItem {
     public TabbyCatItem() {
-        super("tabby", CatVariant.SIAMESE);
+        super("tabby", CatVariant.TABBY);
     }
 }
