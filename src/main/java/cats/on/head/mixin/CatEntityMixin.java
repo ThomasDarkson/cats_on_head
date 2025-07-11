@@ -20,9 +20,10 @@ import net.minecraft.entity.passive.CatVariant;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 
@@ -113,13 +114,13 @@ public abstract class CatEntityMixin implements CatEntityVarsInterface {
         }
     }
 
-    @Inject(at = @At("TAIL"), method = "writeCustomDataToNbt")
-    public void writeCustomDataToNbt(NbtCompound nbt, CallbackInfo info) {
+    @Inject(at = @At("TAIL"), method = "writeCustomData")
+    public void writeCustomData(WriteView nbt, CallbackInfo info) {
         nbt.putInt("eatedFish", eatedFish);
     }
 
-    @Inject(at = @At("TAIL"), method = "readCustomDataFromNbt")
-    public void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo info) {
+    @Inject(at = @At("TAIL"), method = "readCustomData")
+    public void readCustomData(ReadView nbt, CallbackInfo info) {
         eatedFish = nbt.getInt("eatedFish", 0);
     }
 }
