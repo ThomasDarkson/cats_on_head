@@ -9,21 +9,29 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import cats.on.head.CatsOnHead;
+import cats.on.head.effects.FatalPoisonStatusEffect;
+import cats.on.head.effects.LoveOfTheCat;
 import cats.on.head.goals.ActivePlayerTargetGoal;
 import cats.on.head.goals.SleepAndGiveGiftsToPlayerGoal;
-import cats.on.head.item.CatItem;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
 import net.minecraft.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.entity.ai.goal.GoalSelector;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.CreeperEntity;
+import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.predicate.entity.EntityPredicates;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 
 @Mixin(MobEntity.class)
 public abstract class MobEntityMixin {
@@ -37,19 +45,19 @@ public abstract class MobEntityMixin {
 	@Shadow
 	private GoalSelector targetSelector;
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"unchecked" })
     @Inject(method = "<init>", at = @At("TAIL"))
     public void init(CallbackInfo info) {
         MobEntity mob = (MobEntity) (Object) this;
-        if (mob instanceof CreeperEntity creeper) {
+        if ((mob instanceof CreeperEntity creeper)) {
             this.targetSelector.clear((goal) -> {
                 return goal.getClass() == ActiveTargetGoal.class;
             });
-            this.targetSelector.add(1, new ActivePlayerTargetGoal(creeper, PlayerEntity.class, true));
+            this.targetSelector.add(1, new ActivePlayerTargetGoal(mob, PlayerEntity.class, true));
 
             Predicate<LivingEntity> predicate = (entity) -> {
                 if (entity instanceof PlayerEntity player) {
-                    return (player.getEquippedStack(EquipmentSlot.HEAD).getItem() instanceof CatItem);
+                    return CatsOnHead.hasCat(player);
                 }
                 return false;
             };
@@ -61,6 +69,33 @@ public abstract class MobEntityMixin {
             });
             goalSelector.add(2, new FollowOwnerGoal(cat, 1.4d, 5F, 2.5F));
             goalSelector.add(3, new SleepAndGiveGiftsToPlayerGoal(cat));
+        }
+    }
+
+    @Inject(method = "interactWithItem", at = @At("HEAD"), cancellable = true)
+    private void interactWithItem(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> info) {
+        MobEntity mob = (MobEntity) (Object) this;
+        if (mob instanceof HostileEntity hostile) {
+            ItemStack stack = player.getStackInHand(hand);
+            if ((stack.getItem() == Items.SALMON || stack.getItem() == Items.COD) && stack.getCount() >= 4) {
+                if (player.hasStatusEffect(LoveOfTheCat.LOVE_OF_THE_CAT)) {
+                    StatusEffectInstance i = player.getStatusEffect(LoveOfTheCat.LOVE_OF_THE_CAT);
+                    if (i != null && i.getAmplifier() >= 4) {
+                        if (!hostile.hasStatusEffect(FatalPoisonStatusEffect.FATAL_POISON)) {
+                            stack.decrementUnlessCreative(4, player);
+                            hostile.addStatusEffect(new StatusEffectInstance(FatalPoisonStatusEffect.FATAL_POISON, -1, 0));
+                            player.swingHand(hand, true);
+                            info.setReturnValue(ActionResult.SUCCESS);
+                        }
+                        else if (hostile.getStatusEffect(FatalPoisonStatusEffect.FATAL_POISON).getAmplifier() == 0) {
+                            stack.decrementUnlessCreative(4, player);
+                            hostile.getStatusEffect(FatalPoisonStatusEffect.FATAL_POISON).upgrade(new StatusEffectInstance(FatalPoisonStatusEffect.FATAL_POISON, -1, 1));
+                            player.swingHand(hand, true);
+                            info.setReturnValue(ActionResult.SUCCESS);
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -1,0 +1,273 @@
+{
+    "model": {
+        "type": "minecraft:select",
+        "property": "minecraft:component",
+        "component": "cats_on_head:cat_variant",
+        "cases": [
+            {
+                "when": "minecraft:all_black",
+                "model": {
+                    "type": "minecraft:select",
+                    "property": "minecraft:display_context",
+                    "cases": [
+                        {
+                            "when": "head",
+                            "model": {
+                                "type": "minecraft:model",
+                                "model": "cats_on_head:item/all_black_cat_item_on_head"
+                            }
+                        }
+                    ],
+                    "fallback": {
+                        "type": "minecraft:model",
+                        "model": "cats_on_head:item/all_black_cat_item"
+                    }
+                }
+            },
+            {
+                "when": "minecraft:black",
+                "model": {
+                    "type": "minecraft:select",
+                    "property": "minecraft:display_context",
+                    "cases": [
+                        {
+                            "when": "head",
+                            "model": {
+                                "type": "minecraft:model",
+                                "model": "cats_on_head:item/black_cat_item_on_head"
+                            }
+                        }
+                    ],
+                    "fallback": {
+                        "type": "minecraft:model",
+                        "model": "cats_on_head:item/black_cat_item"
+                    }
+                }
+            },
+            {
+                "when": "minecraft:british_shorthair",
+                "model": {
+                    "type": "minecraft:select",
+                    "property": "minecraft:display_context",
+                    "cases": [
+                        {
+                            "when": "head",
+                            "model": {
+                                "type": "minecraft:model",
+                                "model": "cats_on_head:item/british_shorthair_cat_item_on_head"
+                            }
+                        }
+                    ],
+                    "fallback": {
+                        "type": "minecraft:model",
+                        "model": "cats_on_head:item/british_shorthair_cat_item"
+                    }
+                }
+            },
+            {
+                "when": "minecraft:calico",
+                "model": {
+                    "type": "minecraft:select",
+                    "property": "minecraft:display_context",
+                    "cases": [
+                        {
+                            "when": "head",
+                            "model": {
+                                "type": "minecraft:model",
+                                "model": "cats_on_head:item/calico_cat_item_on_head"
+                            }
+                        }
+                    ],
+                    "fallback": {
+                        "type": "minecraft:model",
+                        "model": "cats_on_head:item/calico_cat_item"
+                    }
+                }
+            },
+            {
+                "when": "minecraft:jellie",
+                "model": {
+                    "type": "minecraft:select",
+                    "property": "minecraft:display_context",
+                    "cases": [
+                        {
+                            "when": "head",
+                            "model": {
+                                "type": "minecraft:model",
+                                "model": "cats_on_head:item/jellie_cat_item_on_head"
+                            }
+                        }
+                    ],
+                    "fallback": {
+                        "type": "minecraft:model",
+                        "model": "cats_on_head:item/jellie_cat_item"
+                    }
+                }
+            },
+            {
+                "when": "minecraft:persian",
+                "model": {
+                    "type": "minecraft:select",
+                    "property": "minecraft:display_context",
+                    "cases": [
+                        {
+                            "when": "head",
+                            "model": {
+                                "type": "minecraft:model",
+                                "model": "cats_on_head:item/persian_cat_item_on_head"
+                            }
+                        }
+                    ],
+                    "fallback": {
+                        "type": "minecraft:model",
+                        "model": "cats_on_head:item/persian_cat_item"
+                    }
+                }
+            },
+            {
+                "when": "minecraft:ragdoll",
+                "model": {
+                    "type": "minecraft:select",
+                    "property": "minecraft:display_context",
+                    "cases": [
+                        {
+                            "when": "head",
+                            "model": {
+                                "type": "minecraft:model",
+                                "model": "cats_on_head:item/ragdoll_cat_item_on_head"
+                            }
+                        }
+                    ],
+                    "fallback": {
+                        "type": "minecraft:model",
+                        "model": "cats_on_head:item/ragdoll_cat_item"
+                    }
+                }
+            },
+            {
+                "when": "minecraft:red",
+                "model": {
+                    "type": "minecraft:select",
+                    "property": "minecraft:display_context",
+                    "cases": [
+                        {
+                            "when": "head",
+                            "model": {
+                                "type": "minecraft:model",
+                                "model": "cats_on_head:item/red_cat_item_on_head"
+                            }
+                        }
+                    ],
+                    "fallback": {
+                        "type": "minecraft:model",
+                        "model": "cats_on_head:item/red_cat_item"
+                    }
+                }
+            },
+            {
+                "when": "minecraft:siamese",
+                "model": {
+                    "type": "minecraft:select",
+                    "property": "minecraft:display_context",
+                    "cases": [
+                        {
+                            "when": "head",
+                            "model": {
+                                "type": "minecraft:model",
+                                "model": "cats_on_head:item/siamese_cat_item_on_head"
+                            }
+                        }
+                    ],
+                    "fallback": {
+                        "type": "minecraft:model",
+                        "model": "cats_on_head:item/siamese_cat_item"
+                    }
+                }
+            },
+            {
+                "when": "minecraft:tabby",
+                "model": {
+                    "type": "minecraft:select",
+                    "property": "minecraft:display_context",
+                    "cases": [
+                        {
+                            "when": "head",
+                            "model": {
+                                "type": "minecraft:model",
+                                "model": "cats_on_head:item/tabby_cat_item_on_head"
+                            }
+                        }
+                    ],
+                    "fallback": {
+                        "type": "minecraft:model",
+                        "model": "cats_on_head:item/tabby_cat_item"
+                    }
+                }
+            },
+            {
+                "when": "minecraft:white",
+                "model": {
+                    "type": "minecraft:select",
+                    "property": "minecraft:display_context",
+                    "cases": [
+                        {
+                            "when": "head",
+                            "model": {
+                                "type": "minecraft:model",
+                                "model": "cats_on_head:item/white_cat_item_on_head"
+                            }
+                        }
+                    ],
+                    "fallback": {
+                        "type": "minecraft:model",
+                        "model": "cats_on_head:item/white_cat_item"
+                    }
+                }
+            },
+            {
+                "when": "cats_on_head:niko",
+                "model": {
+                    "type": "minecraft:select",
+                    "property": "minecraft:display_context",
+                    "cases": [
+                        {
+                            "when": "head",
+                            "model": {
+                                "type": "minecraft:model",
+                                "model": "cats_on_head:item/niko_on_head"
+                            }
+                        }
+                    ],
+                    "fallback": {
+                        "type": "minecraft:model",
+                        "model": "cats_on_head:item/niko"
+                    }
+                }
+            },
+            {
+                "when": "cats_on_head:abigail",
+                "model": {
+                    "type": "minecraft:select",
+                    "property": "minecraft:display_context",
+                    "cases": [
+                        {
+                            "when": "head",
+                            "model": {
+                                "type": "minecraft:model",
+                                "model": "cats_on_head:item/abigail_on_head"
+                            }
+                        }
+                    ],
+                    "fallback": {
+                        "type": "minecraft:model",
+                        "model": "cats_on_head:item/abigail"
+                    }
+                }
+            }
+        ],
+        "fallback": {
+            "type": "minecraft:model",
+            "model": "minecraft:item/cat_spawn_egg"
+        }
+    }
+}

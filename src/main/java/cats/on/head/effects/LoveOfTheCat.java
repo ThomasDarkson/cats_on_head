@@ -16,8 +16,11 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 
-public class LoveOfTheFeline extends StatusEffect {
-    public static RegistryEntry<StatusEffect> LOVE_OF_THE_FELINE = Registry.registerReference(Registries.STATUS_EFFECT, CatsOnHead.of("love_of_the_feline"), new LoveOfTheFeline());
+public class LoveOfTheCat extends StatusEffect {
+    @SuppressWarnings("unused")
+    private int amplifier = 0;
+
+    public static RegistryEntry<StatusEffect> LOVE_OF_THE_CAT = Registry.registerReference(Registries.STATUS_EFFECT, CatsOnHead.of("love_of_the_cat"), new LoveOfTheCat());
     
     EntityAttributeInstance i = null;
     EntityAttributeInstance i1 = null;
@@ -27,13 +30,15 @@ public class LoveOfTheFeline extends StatusEffect {
     public static void initialize() {
 	}
 	
-    protected LoveOfTheFeline() {
+    protected LoveOfTheCat() {
 		super(StatusEffectCategory.BENEFICIAL, 16753920);
-	}
+    }
 
     @Override
     public void onApplied(LivingEntity entity, int amplifier) {
         if (entity instanceof PlayerEntity player) {
+            this.amplifier = amplifier;
+
             i = player.getAttributeInstance(EntityAttributes.ATTACK_DAMAGE);
             i1 = player.getAttributeInstance(EntityAttributes.WATER_MOVEMENT_EFFICIENCY);
             i2 = player.getAttributeInstance(EntityAttributes.JUMP_STRENGTH);
@@ -65,6 +70,7 @@ public class LoveOfTheFeline extends StatusEffect {
     @Override
     public void onRemoved(AttributeContainer attributeContainer) {
         super.onRemoved(attributeContainer);
+        this.amplifier = -1;
 
         if (i != null)
             i.removeModifier(CatsOnHead.of("feline_damage_boost"));

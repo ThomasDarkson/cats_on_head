@@ -1,0 +1,12 @@
+{
+  "asset_id": "cats_on_head:entity/cat/abigail",
+  "spawn_conditions": [
+    {
+      "condition": {
+        "type": "minecraft:biome",
+        "biomes": "#minecraft:is_taiga"
+      },
+      "priority": 0
+    }
+  ]
+}

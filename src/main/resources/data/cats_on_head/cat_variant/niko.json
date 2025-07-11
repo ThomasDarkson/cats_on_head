@@ -1,0 +1,22 @@
+{
+  "asset_id": "cats_on_head:entity/cat/niko",
+  "spawn_conditions": [
+    {
+      "condition": {
+        "type": "minecraft:biome",
+        "biomes": "minecraft:sunflower_plains"
+      },
+      "priority": 0
+    },
+    {
+      "condition": {
+        "type": "minecraft:moon_brightness",
+        "range": {
+          "min": 0.9,
+          "max": 1.7
+        }
+      },
+      "priority": 0
+    }
+  ]
+}

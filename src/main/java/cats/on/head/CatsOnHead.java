@@ -1,13 +1,10 @@
 package cats.on.head;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.component.ComponentType;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.entity.passive.CatVariant;
-import net.minecraft.entity.passive.CatVariants;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootTable;
@@ -16,41 +13,20 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mojang.serialization.Codec;
 
-import cats.on.head.effects.LoveOfTheFeline;
-import cats.on.head.item.AllBlackCatItem;
-import cats.on.head.item.BlackCatItem;
-import cats.on.head.item.BritishShortHairCatItem;
-import cats.on.head.item.CalicoCatItem;
+import cats.on.head.effects.FatalPoisonStatusEffect;
+import cats.on.head.effects.LoveOfTheCat;
 import cats.on.head.item.CatItem;
-import cats.on.head.item.JellieCatItem;
-import cats.on.head.item.PersianCatItem;
-import cats.on.head.item.RagdollCatItem;
-import cats.on.head.item.RedCatItem;
-import cats.on.head.item.SiameseCatItem;
-import cats.on.head.item.TabbyCatItem;
-import cats.on.head.item.WhiteCatItem;
+import dev.emi.trinkets.api.TrinketsApi;
+import dev.emi.trinkets.api.client.TrinketRendererRegistry;
 
 public class CatsOnHead implements ModInitializer {
-	@SuppressWarnings("rawtypes")
-	public static final RegistryKey[] VARIANTS = {
-		CatVariants.ALL_BLACK,
-		CatVariants.BLACK,
-		CatVariants.BRITISH_SHORTHAIR,
-		CatVariants.CALICO,
-		CatVariants.JELLIE,
-		CatVariants.PERSIAN,
-		CatVariants.RAGDOLL,
-		CatVariants.RED,
-		CatVariants.SIAMESE,
-		CatVariants.TABBY,
-		CatVariants.WHITE
-	};
+	public static final RegistryKey<CatVariant> NIKO = registerCatVariant("niko");
+	public static final RegistryKey<CatVariant> ABIGAIL = registerCatVariant("abigail");
 
 	public static final RegistryKey<LootTable> CAT_MORNING_GIFT_LEVEL_1 = registerLootTable("gameplay/cat_morning_gift_level_1");
 	public static final RegistryKey<LootTable> CAT_MORNING_GIFT_LEVEL_2 = registerLootTable("gameplay/cat_morning_gift_level_2");
@@ -61,56 +37,20 @@ public class CatsOnHead implements ModInitializer {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-	public static Item all_black = null;
-	public static Item black = null;
-	public static Item british_shorthair = null;
-	public static Item calico = null;
-	public static Item jellie = null;
-	public static Item persian = null;
-	public static Item ragdoll = null;
-	public static Item red = null;
-	public static Item siamese = null;
-	public static Item tabby = null;
-	public static Item white = null;
+	public static Item CAT_ITEM;
 
 	@Override
 	public void onInitialize() {
-		all_black = new AllBlackCatItem();
-		black = new BlackCatItem();
-		british_shorthair = new BritishShortHairCatItem();
-		calico = new CalicoCatItem();
-		jellie = new JellieCatItem();
-		persian = new PersianCatItem();
-		ragdoll = new RagdollCatItem();
-		red = new RedCatItem();
-		siamese = new SiameseCatItem();
-		tabby = new TabbyCatItem();
-		white = new WhiteCatItem();
+		CAT_ITEM = new CatItem();
+		LoveOfTheCat.initialize();
+		FatalPoisonStatusEffect.initialize();
 
-		LoveOfTheFeline.initialize();
-		ServerTickEvents.END_SERVER_TICK.register(server -> {
-            server.getPlayerManager().getPlayerList().forEach(player -> {
-				ItemStack stack = player.getEquippedStack(EquipmentSlot.HEAD);
-				if (stack.getItem() instanceof CatItem) {
-					int amplifier = 0;
-					if (stack.getComponents().contains(FED_FISH_COUNT))
-						amplifier = (int) stack.get(FED_FISH_COUNT) / 64;
-					if (amplifier > 4)
-						amplifier = 4;
-
-					if (!player.hasStatusEffect(LoveOfTheFeline.LOVE_OF_THE_FELINE)) {
-						player.addStatusEffect(new StatusEffectInstance(LoveOfTheFeline.LOVE_OF_THE_FELINE, -1, amplifier, false, false, false));
-					}
-					else if (player.getStatusEffect(LoveOfTheFeline.LOVE_OF_THE_FELINE).getAmplifier() != amplifier) {
-						player.removeStatusEffect(LoveOfTheFeline.LOVE_OF_THE_FELINE);
-						player.addStatusEffect(new StatusEffectInstance(LoveOfTheFeline.LOVE_OF_THE_FELINE, -1, amplifier, false, false, false));
-					}
-				}
-				else
-					player.removeStatusEffect(LoveOfTheFeline.LOVE_OF_THE_FELINE);
-            });
-        });
+		TrinketRendererRegistry.registerRenderer(CAT_ITEM, new CatItemRenderer());
 	}
+
+	private static RegistryKey<CatVariant> registerCatVariant(String id) {
+        return (RegistryKey.of(RegistryKeys.CAT_VARIANT, of(id)));
+    }
 
     private static RegistryKey<LootTable> registerLootTable(String id) {
         return (RegistryKey.of(RegistryKeys.LOOT_TABLE, of(id)));
@@ -127,18 +67,41 @@ public class CatsOnHead implements ModInitializer {
 		return Identifier.of(MOD_ID, o);
 	}
 
-	@SuppressWarnings("unchecked")
-	public static boolean checkCat(CatEntity cat) {
-		if (cat.isBaby())
-			return false;
-		if (cat.getClass().getSuperclass() == CatEntity.class)
-			return false;
-		for (RegistryKey<CatVariant> catVariant : VARIANTS) {
-			if (catVariant == cat.getVariant().getKey().get())
-				return true;
-		}
+	public static String fixCatVariantId(String id) {
+		if (id.contains(":"))
+			id = id.replace(":", ".");
 
-		return false;
+		return id;
+	}
+
+	public static boolean checkCat(CatEntity cat) {
+		if (cat.isBaby() || cat.isDead())
+			return false;
+
+		return true;
+	}
+
+	public static boolean hasCat(PlayerEntity player) {
+		return getCatStack(player, 0).getItem() == CAT_ITEM;
+	}
+
+	public static ItemStack getCatStack(PlayerEntity player, int slot) {
+		if (!TrinketsApi.getTrinketComponent(player).isPresent())
+			return ItemStack.EMPTY;
+
+		try {
+			ItemStack stack = TrinketsApi.getTrinketComponent(player).get().getInventory().get("head").get("cat").getStack(slot);
+			return stack != null ? stack : ItemStack.EMPTY;
+		}
+		catch (Exception e) {
+			return ItemStack.EMPTY;
+		}
+	}
+
+	public static void removeCatFromPlayer(PlayerEntity player) {
+		if (hasCat(player)) {
+			((CatItem) getCatStack(player, 0).getItem()).removeFromHead(player.getWorld(), player);
+		}
 	}
 
 	public static String rgbToHex(int rgb) {
@@ -148,6 +111,7 @@ public class CatsOnHead implements ModInitializer {
         return String.format("#%02X%02X%02X", red, green, blue);
     }
 
+	public static final ComponentType<RegistryKey<CatVariant>> VARIANT = Registry.register(Registries.DATA_COMPONENT_TYPE, of("cat_variant"), ComponentType.<RegistryKey<CatVariant>>builder().codec(RegistryKey.createCodec(RegistryKeys.CAT_VARIANT)).build());
 	public static final ComponentType<String> CUSTOM_NAME = Registry.register(Registries.DATA_COMPONENT_TYPE, of("custom_name"), ComponentType.<String>builder().codec(Codec.string(0, Integer.MAX_VALUE)).build());
 	public static final ComponentType<String> OWNER_NAME = Registry.register(Registries.DATA_COMPONENT_TYPE, of("owner_name"), ComponentType.<String>builder().codec(Codec.string(0, Integer.MAX_VALUE)).build());
 	public static final ComponentType<String> OWNER_UUID = Registry.register(Registries.DATA_COMPONENT_TYPE, of("owner_uuid"), ComponentType.<String>builder().codec(Codec.string(0, Integer.MAX_VALUE)).build());
