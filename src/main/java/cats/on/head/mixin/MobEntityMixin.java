@@ -1,5 +1,6 @@
 package cats.on.head.mixin;
 
+import java.util.List;
 import java.util.function.Predicate;
 
 import org.spongepowered.asm.mixin.Final;
@@ -27,6 +28,7 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.predicate.entity.EntityPredicates;
@@ -45,7 +47,7 @@ public abstract class MobEntityMixin {
 	@Shadow
 	private GoalSelector targetSelector;
 
-    @SuppressWarnings({"unchecked" })
+    @SuppressWarnings({"unchecked", "rawtypes" })
     @Inject(method = "<init>", at = @At("TAIL"))
     public void init(CallbackInfo info) {
         MobEntity mob = (MobEntity) (Object) this;
@@ -77,18 +79,25 @@ public abstract class MobEntityMixin {
         MobEntity mob = (MobEntity) (Object) this;
         if (mob instanceof HostileEntity hostile) {
             ItemStack stack = player.getStackInHand(hand);
-            if ((stack.getItem() == Items.SALMON || stack.getItem() == Items.COD) && stack.getCount() >= 4) {
+            List<Item> items = List.of(
+                Items.COD,
+                Items.SALMON,
+                Items.COOKED_COD,
+                Items.COOKED_SALMON
+            );
+            boolean isAcceptable = items.contains(stack.getItem());
+            if (isAcceptable && stack.getCount() >= 2) {
                 if (player.hasStatusEffect(LoveOfTheCat.LOVE_OF_THE_CAT)) {
                     StatusEffectInstance i = player.getStatusEffect(LoveOfTheCat.LOVE_OF_THE_CAT);
                     if (i != null && i.getAmplifier() >= 4) {
                         if (!hostile.hasStatusEffect(FatalPoisonStatusEffect.FATAL_POISON)) {
-                            stack.decrementUnlessCreative(4, player);
+                            stack.decrementUnlessCreative(2, player);
                             hostile.addStatusEffect(new StatusEffectInstance(FatalPoisonStatusEffect.FATAL_POISON, -1, 0));
                             player.swingHand(hand, true);
                             info.setReturnValue(ActionResult.SUCCESS);
                         }
                         else if (hostile.getStatusEffect(FatalPoisonStatusEffect.FATAL_POISON).getAmplifier() == 0) {
-                            stack.decrementUnlessCreative(4, player);
+                            stack.decrementUnlessCreative(2, player);
                             hostile.getStatusEffect(FatalPoisonStatusEffect.FATAL_POISON).upgrade(new StatusEffectInstance(FatalPoisonStatusEffect.FATAL_POISON, -1, 1));
                             player.swingHand(hand, true);
                             info.setReturnValue(ActionResult.SUCCESS);
