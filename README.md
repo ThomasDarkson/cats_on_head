@@ -65,12 +65,12 @@ Level **5** beneficial effects (Fed fish >= 256):
 - Poisoning is now unlocked, check **Fatal Poison** below
 
 ### Fatal Poison
-Fatal Poison is an effect that's caused by feeding raw cod or raw salmon to hostile mobs.
+Fatal Poison is an effect that's caused by feeding raw cod, raw salmon, cooked cod and cooked salmon to hostile mobs.
 Feeding cod or salmon to hostile mobs will give them this effect, which is permanent and it will kill them unlike regular Poison. You unlock this at Love of the Cat Level 5.
 
-You need 4 fish to poison the mobs, additionally you can upgrade the effect once with 4 extra fish.
+You need 2 fish to poison the mobs, additionally you can upgrade the effect once with 2 extra fish.
 
-![](https://i.ibb.co/PGbPMVSf/2.gif)
+![](https://i.ibb.co/5xMJptG8/Newproject-ezgif-com-optimize.gif)
 
 ## Sleeping
 If you sleep with your cat on your head, your cat will get off your head and will sleep with you instead. 

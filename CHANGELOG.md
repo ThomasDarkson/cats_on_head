@@ -1,3 +1,8 @@
+# 2.0.1
+- Fatal Poison can now be inflicted with cooked cod and cooked salmon
+- Fatal Poison now requires 2 fish instead 4
+- 1.21.8 support
+
 # 2.0.0 - The Big Update!
 ## Additions
 - Added 2 new cat variants, "Niko" and "Abigail"
