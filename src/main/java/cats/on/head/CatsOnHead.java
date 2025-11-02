@@ -100,7 +100,7 @@ public class CatsOnHead implements ModInitializer {
 
 	public static void removeCatFromPlayer(PlayerEntity player) {
 		if (hasCat(player)) {
-			((CatItem) getCatStack(player, 0).getItem()).removeFromHead(player.getWorld(), player);
+			((CatItem) getCatStack(player, 0).getItem()).removeFromHead(player.getEntityWorld(), player);
 		}
 	}
 

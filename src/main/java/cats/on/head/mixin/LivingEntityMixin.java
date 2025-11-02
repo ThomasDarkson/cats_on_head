@@ -70,7 +70,7 @@ public abstract class LivingEntityMixin {
             LivingEntity entity = (LivingEntity) (Object) this;
             if (entity instanceof CatEntity cat) {
                 if (cat.isTamed() && source.getAttacker() == cat.getOwner() && CatsOnHead.checkCat(cat)) {
-                    dropLootCat(cat, (ServerWorld) cat.getWorld(), source);
+                    dropLootCat(cat, (ServerWorld) cat.getEntityWorld(), source);
                     cat.remove(RemovalReason.DISCARDED);
                     info.cancel();
                 }

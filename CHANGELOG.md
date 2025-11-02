@@ -1,3 +1,7 @@
+# 2.0.2
+- Dependencies are now bundled with the JAR, so you don’t need to install them manually
+- 1.21.9 support
+
 # 2.0.1
 - Fatal Poison can now be inflicted with cooked cod and cooked salmon
 - Fatal Poison now requires 2 fish instead 4

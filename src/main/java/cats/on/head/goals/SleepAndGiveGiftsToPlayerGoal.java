@@ -59,7 +59,7 @@ public class SleepAndGiveGiftsToPlayerGoal extends Goal {
                 return false;
             }
             BlockPos lv2 = this.owner.getBlockPos();
-            BlockState lv3 = ((World) this.cat.getWorld()).getBlockState(lv2);
+            BlockState lv3 = ((World) this.cat.getEntityWorld()).getBlockState(lv2);
             if (lv3.isIn(BlockTags.BEDS)) {
                 this.bedPos = lv3.getOrEmpty(BedBlock.FACING).map(direction -> lv2.offset(direction.getOpposite())).orElseGet(() -> new BlockPos(lv2));
                 return !this.cannotSleep();
@@ -69,7 +69,7 @@ public class SleepAndGiveGiftsToPlayerGoal extends Goal {
     }
 
     private boolean cannotSleep() {
-        List < CatEntity > list = this.cat.getWorld().getNonSpectatingEntities(CatEntity.class, new Box(this.bedPos).expand(2.0));
+        List < CatEntity > list = this.cat.getEntityWorld().getNonSpectatingEntities(CatEntity.class, new Box(this.bedPos).expand(2.0));
         for (CatEntity lv : list) {
             if (lv == this.cat || !lv.isInSleepingPose() && !((CatEntityVarsInterface)lv).get_HeadDown()) continue;
             return true;
@@ -93,11 +93,11 @@ public class SleepAndGiveGiftsToPlayerGoal extends Goal {
     @Override
     public void stop() {
         this.cat.setInSleepingPose(false);
-        float f = this.cat.getWorld().getSkyAngle(1.0f);
+        float f = this.cat.getEntityWorld().getSkyAngle(1.0f);
         float chance = 0.7f;
         int amplifier = Math.max(0, ((CatEntityVarsInterface) (cat)).get_eatedFish() / 64);
         chance += (float) amplifier * 0.15F;
-        if (this.owner.getSleepTimer() >= 100 && (double) f > 0.77 && (double) f < 0.8 && (double)((World) this.cat.getWorld()).getRandom().nextFloat() < chance) {
+        if (this.owner.getSleepTimer() >= 100 && (double) f > 0.77 && (double) f < 0.8 && (double)((World) this.cat.getEntityWorld()).getRandom().nextFloat() < chance) {
             this.dropMorningGifts();
         }
         this.ticksOnBed = 0;
@@ -125,11 +125,11 @@ public class SleepAndGiveGiftsToPlayerGoal extends Goal {
             if (amplifier > 3)
                 lootTable = CatsOnHead.CAT_MORNING_GIFT_LEVEL_4;
             
-            LootTable lv3 = ((World) this.cat.getWorld()).getServer().getReloadableRegistries().getLootTable(lootTable);
-            LootWorldContext lv4 = new LootWorldContext.Builder((ServerWorld) this.cat.getWorld()).add(LootContextParameters.ORIGIN, this.cat.getPos()).add(LootContextParameters.THIS_ENTITY, this.cat).build(LootContextTypes.GIFT);
+            LootTable lv3 = ((World) this.cat.getEntityWorld()).getServer().getReloadableRegistries().getLootTable(lootTable);
+            LootWorldContext lv4 = new LootWorldContext.Builder((ServerWorld) this.cat.getEntityWorld()).add(LootContextParameters.ORIGIN, this.cat.getEntityPos()).add(LootContextParameters.THIS_ENTITY, this.cat).build(LootContextTypes.GIFT);
             ObjectArrayList < ItemStack > list = lv3.generateLoot(lv4);
             for (ItemStack lv5: list) {
-                this.cat.getWorld().spawnEntity(new ItemEntity((World) this.cat.getWorld(), (double) lv2.getX() - (double) MathHelper.sin(this.cat.bodyYaw * ((float) Math.PI / 180)), lv2.getY(), (double) lv2.getZ() + (double) MathHelper.cos(this.cat.bodyYaw * ((float) Math.PI / 180)), lv5));
+                this.cat.getEntityWorld().spawnEntity(new ItemEntity((World) this.cat.getEntityWorld(), (double) lv2.getX() - (double) MathHelper.sin(this.cat.bodyYaw * ((float) Math.PI / 180)), lv2.getY(), (double) lv2.getZ() + (double) MathHelper.cos(this.cat.bodyYaw * ((float) Math.PI / 180)), lv5));
             }
         }
     }
