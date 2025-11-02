@@ -90,7 +90,7 @@ public abstract class CatEntityMixin implements CatEntityVarsInterface {
             if (cat.isOwner(player)) {
                 ItemStack itemStack = player.getStackInHand(hand);
                 if ((itemStack.isOf(Items.COOKED_COD) || itemStack.isOf(Items.COOKED_SALMON)) && cat.getHealth() == cat.getMaxHealth()) {
-                    if (!cat.getWorld().isClient()) {
+                    if (!cat.getEntityWorld().isClient()) {
                         int i = itemStack.getCount();
                         UseRemainderComponent useRemainderComponent = (UseRemainderComponent) itemStack.get(DataComponentTypes.USE_REMAINDER);
                         itemStack.decrementUnlessCreative(1, player);

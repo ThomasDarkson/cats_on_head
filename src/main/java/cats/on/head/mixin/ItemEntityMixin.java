@@ -30,7 +30,7 @@ public class ItemEntityMixin {
     @Inject(method = "onPlayerCollision", at = @At("HEAD"), cancellable = true)
     public void onPlayerCollision(PlayerEntity player, CallbackInfo info) {
         ItemEntity entity = (ItemEntity) (Object) this;
-        if (!entity.getWorld().isClient) {
+        if (!entity.getEntityWorld().isClient()) {
             ItemStack itemStack = entity.getStack();
             Item item = itemStack.getItem();
             if (item instanceof CatItem) {

@@ -183,7 +183,7 @@ public class CatItem extends TrinketItem {
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         World world = context.getWorld();
-        if (world.isClient) {
+        if (world.isClient()) {
             return ActionResult.SUCCESS;
         } else {
             ItemStack itemStack = context.getStack();
@@ -254,7 +254,7 @@ public class CatItem extends TrinketItem {
                 } else {
                     itemStack.decrement(1);
                     user.incrementStat(Stats.USED.getOrCreateStat(this));
-                    world.emitGameEvent(user, GameEvent.ENTITY_PLACE, entity.getPos());
+                    world.emitGameEvent(user, GameEvent.ENTITY_PLACE, entity.getEntityPos());
 
                     if (entity instanceof CatEntity cat) {
                         cat.setOwner(user);
@@ -308,7 +308,7 @@ public class CatItem extends TrinketItem {
                 } else {
                     itemStack.decrementUnlessCreative(1, user);
                     user.incrementStat(Stats.USED.getOrCreateStat(this));
-                    world.emitGameEvent(user, GameEvent.ENTITY_PLACE, entity.getPos());
+                    world.emitGameEvent(user, GameEvent.ENTITY_PLACE, entity.getEntityPos());
 
                     if (entity instanceof CatEntity cat) {
                         cat.setOwner(user);
