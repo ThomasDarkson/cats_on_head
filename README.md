@@ -6,7 +6,7 @@
 
 ![](https://i.ibb.co/wNv2b4X3/Yeni-Proje-2.png)
 
-Requires [Trinket Canary](https://modrinth.com/mod/trinkets-canary "Trinket Canary") and [Cardinal Components API](https://modrinth.com/mod/cardinal-components-api "Cardinal Components API").
+This mod bundles [Trinket Canary](https://modrinth.com/mod/trinkets-canary "Trinket Canary") and [Cardinal Components API](https://modrinth.com/mod/cardinal-components-api "Cardinal Components API") with its JAR.
 
 # Cats on Head
 Cats on Head is a Fabric mod that allows you to put your tamed cats on your heads! It also includes improvements and fixes to cats. 

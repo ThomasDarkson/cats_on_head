@@ -30,8 +30,6 @@
 			"1.21.8"
 		],
 		"java": ">=21",
-		"fabric-api": "*",
-		"trinkets": ">=3.11.0",
-		"cardinal-components": ">=6.3.1"
+		"fabric-api": "*"
 	}
 }
