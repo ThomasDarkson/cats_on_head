@@ -1,3 +1,6 @@
+# 2.0.3 (1.21.10)
+- Fix crash
+
 # 2.0.2
 - Dependencies are now bundled with the JAR, so you don’t need to install them manually
 - 1.21.9 support
