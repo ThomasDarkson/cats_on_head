@@ -39,7 +39,6 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     modImplementation "maven.modrinth:trinkets-canary:${project.trinkets_version}"
-    include "maven.modrinth:trinkets-canary:${project.trinkets_version}"
 
 	modImplementation "org.ladysnake.cardinal-components-api:cardinal-components-base:${project.cca_version}"
     include "org.ladysnake.cardinal-components-api:cardinal-components-base:${project.cca_version}"
@@ -71,6 +70,13 @@ jar {
     from("LICENSE") {
         rename { "${it}_${inputs.properties.archivesName}"}
     }
+}
+
+remapJar {
+	// Add a nested mod jar to this task, the include configuration should be used for maven libraries and mods.
+	nestedJars.from file("trinkets-3.11.0.jar")
+	// When enabled nested jars will be included with the output jar.
+	addNestedDependencies = true
 }
 
 publishing {

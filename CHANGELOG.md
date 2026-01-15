@@ -1,3 +1,6 @@
+# 2.0.3 (1.21.11)
+- Fix smithing table crash
+
 # 2.0.2
 - Dependencies are now bundled with the JAR, so you don’t need to install them manually
 - 1.21.9 support
